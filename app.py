@@ -110,7 +110,7 @@ def profile():
     comments_movie_title = []
     for comment in comments:
         movie_id = movies_comments.find_one({"comment_id": comment['_id']})
-        movie = movies_collection.find_one({"_id": movie_id['movie_id']})
+        if movie_id: movie = movies_collection.find_one({"_id": movie_id['movie_id']})
         if movie:
             updated_comment = dict(comment)
             updated_comment["title"] = movie['title']

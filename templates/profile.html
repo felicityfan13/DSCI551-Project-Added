@@ -136,8 +136,7 @@
             for (var i = 0; i < li.length; i++) {
                 var commentContainer = li[i].getElementsByClassName("comment-text")[0];
                 var txtValue = commentContainer.textContent || commentContainer.innerText;
-                var commentText = txtValue.split(': ')[1]
-                if (commentText.toUpperCase().indexOf(filter) > -1) {
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
                     li[i].style.display = "";
                 } else {
                     li[i].style.display = "none";
