@@ -7,4 +7,7 @@
 2. Go to the directory of the DSCI551-Project
 4. pip install flask pymongo
 5. python app.py
-   
+
+### Admin Signin Information
+UserID: Admin
+Password: 0000
