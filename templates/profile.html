@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ user.name }}</title>
+    <style>
+
+        body {
+            background-image: url('{{ url_for('static', filename='111.jpg') }}');
+            background-size: cover;
+            position: relative;
+        }
+        nav {
+            position: absolute;
+            right: 10px;
+        }
+
+
+        .movie-comment-container {
+            margin-bottom: 10px;
+        }
+
+        .movie-name {
+            font-weight: bold;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        .comment-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .comment-text, .profile-info {
+            flex: 1;
+            margin-right: 1px;
+        }
+
+        .edit-input {
+            display: none;
+        }
+
+        .section {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .profile-section, .reviews-section {
+            padding: 20px;
+        }
+
+        button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/profile">Profile</a></li>
+        </ul>
+    </nav>
+    <h1>{{ user.name }}</h1>
+
+    <!-- Update Profile Section -->
+    <div class="profile-section section">
+        <h2>Update Profile</h2>
+        <span class="profile-info" id="username-display">{{ user.name }}</span>
+        <input class="edit-input" id="username-input" type="text" value="{{ user.name }}">
+        <span class="profile-info" id="password-display">********</span>
+        <input class="edit-input" id="password-input" type="password">
+        <ul><li><a href="/update_profile">Edit Profile</a></li></ul>
+    </div>
+
+    <!-- Reviews Section -->
+    <div class="reviews-section section">
+        <h2>{{ 'Manage Reviews' if user._id == 1 else 'My Reviews' }}</h2>
+        <input type="text" id="searchInput" placeholder="Search comments..." onkeyup="filterComments()">
+        <ul id="commentsList">
+            {% for comment in comments %}
+                <li class="movie-comment-container">
+                    <div class="movie-name">{{ comment.title }}:</div>
+                    <div class="comment-container">
+                        <div class="comment-text">{{ comment.name }} {{ comment.comment }}</div>
+                        <form class="edit-comment-form" action="/edit_comment/{{ comment._id }}" method="post" style="display: none;">
+                            <input type="text" name="edited_comment" class="edit-comment-input" value="{{ comment.comment }}">
+                            <button type="submit">Submit</button>
+                        </form>
+                        <form action="/delete_comment/{{ comment._id }}" method="post">
+                            <button type="submit" class="delete-comment">Delete</button>
+                        </form>
+                        <button class="edit-comment">Edit</button>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Edit User Section -->
+    {% if user_id == 1 %}
+        <div class="edit-user section">
+            <h1>Edit User Information</h1>
+            <ul>
+                {% for user in users %}
+                    <li><a href="/edit_user/{{ user._id }}">{{ user.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <script>
+        // Function to handle edit button click
+        document.querySelectorAll('.edit-comment').forEach(function(editButton) {
+            editButton.addEventListener('click', function() {
+                const commentContainer = this.parentElement;
+                const commentText = commentContainer.querySelector('.comment-text');
+                const editForm = commentContainer.querySelector('.edit-comment-form');
+                const editInput = editForm.querySelector('.edit-comment-input');
+
+                commentText.style.display = 'none';
+                editForm.style.display = 'block';
+                editInput.focus();
+            });
+        });
+    </script>
+    <script>
+        function filterComments() {
+            var input = document.getElementById('searchInput');
+            var filter = input.value.toUpperCase();
+            var ul = document.getElementById("commentsList");
+            var li = ul.getElementsByTagName('li');
+            
+            for (var i = 0; i < li.length; i++) {
+                var commentContainer = li[i].getElementsByClassName("comment-text")[0];
+                var txtValue = commentContainer.textContent || commentContainer.innerText;
+                var commentText = txtValue.split(': ')[1]
+                if (commentText.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>

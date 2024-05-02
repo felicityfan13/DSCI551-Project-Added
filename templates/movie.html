@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ movie.title }}</title>
+    <style>
+        body {
+            background-image: url('/static/Titanic.jpg');
+            background-size: cover;
+            text-align: center;
+            position: relative;
+        }
+        nav {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+
+        .background-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.5);
+            z-index: -1;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="background-overlay"></div>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/profile">Profile</a></li> 
+        </ul>
+    </nav>
+    <h1>{{ movie.title }} ({{ movie.year }})</h1>
+    <h2>Comments</h2>
+    <ul>
+        {% for comment in comments %}
+            <li>{{ comment.comment }}</li>
+        {% endfor %}
+    </ul>
+    <form action="/post_comment/{{ movie._id }}" method="post">
+        <label for="comment">Write a Comment:</label><br>
+        <textarea id="comment" name="comment" rows="4" cols="50"></textarea><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

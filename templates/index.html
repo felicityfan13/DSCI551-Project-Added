@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Review Website</title>
+    <style>
+
+        body {
+            background-image: url('{{ url_for('static', filename='111.jpg') }}');
+            background-size: cover;
+            text-align: center;
+            position: relative;
+        }
+
+        nav {
+            position: absolute;
+            right: 10px;
+        }
+
+
+
+        .top-right-buttons {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .top-right-buttons li {
+            display: inline;
+            margin-left: 10px;
+        }
+
+        .top-right-buttons li a {
+            color: black;
+            text-decoration: none;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        {# .movie-item {#}
+        {#    display: flex;#}
+        {#    align-items: baseline;#}
+        {# }#}
+
+         .movie-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+
+        .comment-button {
+            color: green;
+            margin-left: auto;
+            margin-left: 10px;
+        }
+
+        .delete-button {
+            color: red;
+            margin-left: auto;
+            margin-right: 10px;
+            text-decoration: none;
+        }
+
+        .add-movie-button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+
+        .add-movie-button:hover {
+            background-color: #45a049;
+        }
+
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/profile">Profile</a></li> 
+        </ul>
+    </nav>
+    <ul class="top-right-buttons">
+        <li><a href="/login">Login</a></li>
+        <li><a href="/register">Register</a></li>
+    </ul>
+    <h1>List of Movies</h1>
+    <ul>
+        {% for movie in movies %}
+            <li class="movie-item">
+                <a href="/movie/{{ movie._id }}">{{ movie.title }} ({{ movie.year }})</a>
+                {% if user_id == 1 %}
+                    <a href="/movie/{{ movie._id }}/comments" class="comment-button">View Comments</a>
+                    <a href="/delete_movie/{{ movie._id }}" class="delete-button">Delete</a>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+    {% if user_id == 1 %}
+{#        <ul><li><a href="/add_movie">Add Movie</a></li></ul>#}
+        <button class="add-movie-button"><a href="/add_movie" style="color: white; text-decoration: none;">Add Movie</a></button>
+    {% endif %}
+</body>
+</html>
